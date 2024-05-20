@@ -1,0 +1,29 @@
+﻿@model GeneralWorkPermit.ViewModels.AdminDashboardVM
+@using GeneralWorkPermit.Models
+
+@{
+    ViewData["Title"] = "AdminDashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>AdminDashboard</h1>
+<h5>Hi @Model.AdminId</h5>
+
+
+
+<div>
+    <h4>Reviews to be attended to</h4>
+    <hr />
+    @foreach (Reviews review in Model.Reviews)
+    {
+        <dl class="row">
+         @review.Applicant.Email;
+         <button asp-controller="review" asp-action="ViewApplicantReview"></button>
+    
+        </dl>
+    }
+</div>
+<div>
+    @* <a asp-action="Edit" asp-route-id="@Model?.ReviewsId">Edit</a> *@ |
+    <a asp-action="Index">Back to List</a>
+</div>

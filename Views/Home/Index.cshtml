@@ -1,0 +1,25 @@
+﻿@model GeneralWorkPermit.Models.Applicants
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="permit-container">
+    <h1>GENERAL WORK PERMIT</h1>
+    <div class="form-container">
+        <form>
+            <div class="mb-3">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" type="email" class="form-control" placeholder="Email">
+            </div>
+            <div class="mb-3">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" type="password" class="form-control" placeholder="Password">
+            </div>
+            <button asp-area="" asp-controller="Home" asp-action="login" type="submit" class="btn btn-dark btn-block" >Login</button>
+            <a href="#" class="mt-2">Forgot password?</a>
+        </form>
+    </div>
+
+    <a asp-area="" asp-controller="Register" asp-action="register" class="btn btn-primary btn-block mt-3 ">Sign Up for a New Permit</a>
+</div>
