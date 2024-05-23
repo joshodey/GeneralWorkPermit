@@ -1,6 +1,8 @@
 ﻿using System.Net.Mail;
 using GeneralWorkPermit.Services;
 using MimeKit;
+using MailKit.Net.Smtp;
+using SmtpClient = MailKit.Net.Smtp.SmtpClient;
 
 namespace GeneralWorkPermit.EmailService
 {
@@ -21,7 +23,7 @@ namespace GeneralWorkPermit.EmailService
         {
             var emailMessage = new MimeMessage();
             emailMessage.From.Add(new MailboxAddress("HMS", _emailConfig.From));
-            emailMessage.To.AddRange(message.To);
+            emailMessage.To.AddRange((IEnumerable<InternetAddress>)message.To);
             emailMessage.Subject = message.Subject;
             emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html) { Text = string.Format("<p>{0}</p>", message.Content) };
             return emailMessage;

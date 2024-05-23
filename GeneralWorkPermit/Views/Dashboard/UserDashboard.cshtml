@@ -1,0 +1,56 @@
+﻿@model GeneralWorkPermit.ViewModels.UserDashboardDisplay
+
+@{
+    ViewData["Title"] = "Applicant Dashboard";
+}
+
+<h2>@ViewData["Title"]</h2>
+
+<div class="applicant-dashboard">
+    <h3>Applicant Details</h3>
+    @if(Model.Reviews is not null && Model.Reviews.GWTapprove)
+    {
+        <h6>Your GNP has been approved by @Model.ReviewerName</h6>
+    }
+    else
+    {
+        <h6>Your GNP request has not been approved</h6>
+    }
+    <h6> </h6>
+    <div class="applicant-details">
+        <p><strong>First Name:</strong> @Model.FirstName</p>
+        <p><strong>Last Name:</strong> @Model.LastName</p>
+        <p><strong>Facility:</strong> @Model.Facility</p>
+        <p><strong>Location:</strong> @Model.Location</p>
+        <p><strong>Company:</strong> @Model.Company</p>
+        <p><strong>Duration:</strong> @Model.Duration</p>
+        <p><strong>Start Date:</strong> @Model.StartDate.ToString("yyyy-MM-dd")</p>
+        <p><strong>End Date:</strong> @Model.EndDate.ToString("yyyy-MM-dd")</p>
+        <p><strong>Equipments:</strong> @Model.Equipments</p>
+        @if(Model.Reviews is not null)
+        {
+            <p><strong>BackInService:</strong> @Model.Reviews.BackInService</p>
+            <p><strong>Location:</strong> @Model.Location</p>
+            <p><strong>Back InService Description:</strong> @Model.Reviews.BackInServiceDescription</p>
+
+        }
+    </div>
+</div>
+
+<style>
+    .applicant-dashboard {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+    }
+    .applicant-details p {
+        font-size: 1.1em;
+    }
+    .applicant-details p strong {
+        display: inline-block;
+        width: 150px;
+    }
+</style>

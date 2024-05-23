@@ -11,40 +11,51 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GeneralWorkPermit.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20230524132235_premier")]
-    partial class premier
+    [Migration("20240522235706_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "6.0.0");
 
+            modelBuilder.Entity("GeneralWorkPermit.Models.Admin", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AdminType")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("admins");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "Admin",
+                            AdminType = 0,
+                            UserId = "Admin"
+                        });
+                });
+
             modelBuilder.Entity("GeneralWorkPermit.Models.Applicants", b =>
                 {
                     b.Property<string>("Id")
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("INTEGER");
-
                     b.Property<string>("Company")
                         .IsRequired()
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Duration")
                         .IsRequired()
                         .HasColumnType("TEXT");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("TEXT");
@@ -61,52 +72,18 @@ namespace GeneralWorkPermit.Migrations
                         .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("TEXT");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("TEXT");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("TEXT");
-
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("TEXT");
 
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
+                    b.Property<string>("UserId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
+                    b.HasIndex("UserId");
 
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex");
-
-                    b.ToTable("AspNetUsers", (string)null);
+                    b.ToTable("applicant");
                 });
 
             modelBuilder.Entity("GeneralWorkPermit.Models.GasTestingRequireemnts", b =>
@@ -123,16 +100,16 @@ namespace GeneralWorkPermit.Migrations
                     b.Property<string>("H2S")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("Hours")
+                    b.Property<int>("Hours")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Instrument")
                         .HasColumnType("TEXT");
 
-                    b.Property<int?>("OTwo")
+                    b.Property<int>("OTwo")
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("Percent")
+                    b.Property<int>("Percent")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("ReviewId")
@@ -153,6 +130,10 @@ namespace GeneralWorkPermit.Migrations
             modelBuilder.Entity("GeneralWorkPermit.Models.Reviews", b =>
                 {
                     b.Property<string>("ReviewsId")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("ApplicantId")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("BackInService")
@@ -180,6 +161,12 @@ namespace GeneralWorkPermit.Migrations
                         .HasColumnType("INTEGER");
 
                     b.Property<bool>("CriticalLift")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("GWPNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("GWTapprove")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("GasTestingId")
@@ -211,9 +198,114 @@ namespace GeneralWorkPermit.Migrations
 
                     b.HasKey("ReviewsId");
 
+                    b.HasIndex("ApplicantId")
+                        .IsUnique();
+
                     b.HasIndex("GasTestingId");
 
                     b.ToTable("reviews");
+                });
+
+            modelBuilder.Entity("GeneralWorkPermit.Models.User", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("LoginAttempt")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Password")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("TEXT");
+
+                    b.Property<int>("UserType")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex");
+
+                    b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "Admin",
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "7e266a53-8259-4272-a87a-ed81e350592f",
+                            Email = "admin@gnp.com",
+                            EmailConfirmed = false,
+                            FirstName = "Default",
+                            LastName = "Admin",
+                            LockoutEnabled = false,
+                            LoginAttempt = 0,
+                            Password = "P@ssw0rd",
+                            PhoneNumberConfirmed = false,
+                            SecurityStamp = "238d90e7-372c-46af-8c0c-91f18e55d2eb",
+                            TwoFactorEnabled = false,
+                            UserName = "admin@gnp.com",
+                            UserType = 1
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -240,6 +332,29 @@ namespace GeneralWorkPermit.Migrations
                         .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = "516b59fa-6185-4a4f-bee1-b6a4a8bd6dda",
+                            ConcurrencyStamp = "bf13dfd2-a931-4902-9aa4-1301cbab6a31",
+                            Name = "User",
+                            NormalizedName = "USER"
+                        },
+                        new
+                        {
+                            Id = "9391e3e9-d063-4e73-a8a4-46204c6a05a3",
+                            ConcurrencyStamp = "f3a5826e-ba7a-4354-8cb3-d6803013c8ca",
+                            Name = "Inspector",
+                            NormalizedName = "INSPECTOR"
+                        },
+                        new
+                        {
+                            Id = "b78d9638-da62-477b-a2ec-3c30cd6825f8",
+                            ConcurrencyStamp = "354ffebe-d564-41d0-beb9-01d9ecadf53b",
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -344,11 +459,30 @@ namespace GeneralWorkPermit.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("GeneralWorkPermit.Models.Applicants", b =>
+                {
+                    b.HasOne("GeneralWorkPermit.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("GeneralWorkPermit.Models.Reviews", b =>
                 {
+                    b.HasOne("GeneralWorkPermit.Models.Applicants", "Applicant")
+                        .WithOne("Reviews")
+                        .HasForeignKey("GeneralWorkPermit.Models.Reviews", "ApplicantId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("GeneralWorkPermit.Models.GasTestingRequireemnts", "GasTesting")
                         .WithMany()
                         .HasForeignKey("GasTestingId");
+
+                    b.Navigation("Applicant");
 
                     b.Navigation("GasTesting");
                 });
@@ -364,7 +498,7 @@ namespace GeneralWorkPermit.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("GeneralWorkPermit.Models.Applicants", null)
+                    b.HasOne("GeneralWorkPermit.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -373,7 +507,7 @@ namespace GeneralWorkPermit.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("GeneralWorkPermit.Models.Applicants", null)
+                    b.HasOne("GeneralWorkPermit.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -388,7 +522,7 @@ namespace GeneralWorkPermit.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GeneralWorkPermit.Models.Applicants", null)
+                    b.HasOne("GeneralWorkPermit.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -397,10 +531,16 @@ namespace GeneralWorkPermit.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("GeneralWorkPermit.Models.Applicants", null)
+                    b.HasOne("GeneralWorkPermit.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("GeneralWorkPermit.Models.Applicants", b =>
+                {
+                    b.Navigation("Reviews")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -1,5 +1,4 @@
-﻿using GeneralWorkPermit.DTO;
-using GeneralWorkPermit.Models;
+﻿using GeneralWorkPermit.Models;
 using GeneralWorkPermit.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -20,59 +19,58 @@ namespace GeneralWorkPermit.Controllers
             //_signin = signin;
         }
 
-        [HttpPost]
-        [Route("register")]
-        public async Task<IActionResult> Register([FromBody] UserDto register)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
+        //[HttpPost]
+        //[Route("register")]
+        //public async Task<IActionResult> Register([FromBody] Applicants register)
+        //{
+        //    if (!ModelState.IsValid)
+        //    {
+        //        return BadRequest(ModelState);
+        //    }
 
-            try
-            {
+        //    try
+        //    {
 
-                var mapdata = new Applicants()
-                {
-                    FirstName = register.FirstName,
-                    LastName = register.LastName,
-                    Email = register.Email,
-                    UserName = register.Email,
-                    Facility = register.Facility,
-                    Location = register.Location,
-                    Company = register.Company,
-                    Duration = register.Duration,
-                    StartDate = register.StartDate,
-                    EndDate = register.EndDate,
-                    Equipments = register.Equipments
-                };
+        //        var mapdata = new Applicants()
+        //        {
+        //            FirstName = register.FirstName,
+        //            LastName = register.LastName,
+        //            Email = register.Email,
+        //            UserName = register.Email,
+        //            Facility = register.Facility,
+        //            Location = register.Location,
+        //            Company = register.Company,
+        //            Duration = register.Duration,
+        //            StartDate = register.StartDate,
+        //            EndDate = register.EndDate,
+        //            Equipments = register.Equipments
+        //        };
 
-                var result = await _usermanager.CreateAsync(mapdata, register.Password);
+        //        var result = await _usermanager.CreateAsync(mapdata, register.Password);
 
-                if (!result.Succeeded)
-                {
-                    foreach (var errors in result.Errors)
-                    {
-                        ModelState.AddModelError(errors.Code, errors.Description);
-                    }
-                    //return BadRequest("User Registration failed");
-                    return BadRequest(ModelState);
+        //        if (!result.Succeeded)
+        //        {
+        //            foreach (var errors in result.Errors)
+        //            {
+        //                ModelState.AddModelError(errors.Code, errors.Description);
+        //            }
+        //            //return BadRequest("User Registration failed");
+        //            return BadRequest(ModelState);
 
-                }
+        //        }
 
-                await _usermanager.AddToRolesAsync(mapdata, new[] { "User" });
-                return Accepted("successful");
-            }
-            catch (Exception ex)
-            {
-                return Problem($"Something went wrong in {nameof(Register)}  {ex}");
-            }
-
-        }
+        //        await _usermanager.AddToRolesAsync(mapdata, new[] { "User" });
+        //        return Accepted("successful");
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Problem($"Something went wrong in {nameof(Register)}  {ex}");
+        //    }
+        //}
 
         [HttpPost]
         [Route("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto user)
+        public async Task<IActionResult> Login([FromBody] User user)
         {
             if (!ModelState.IsValid)
             {

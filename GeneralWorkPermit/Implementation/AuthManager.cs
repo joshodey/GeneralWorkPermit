@@ -5,25 +5,26 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
-using GeneralWorkPermit.DTO;
 using GeneralWorkPermit.Models;
 using GeneralWorkPermit.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
-namespace ResultCompiler.Core.Implementation
+namespace GeneralWorkPermit.Implementation
 {
     public class AuthManager : IAuthManager
     {
-        private readonly UserManager<Applicants> _userManager;
+        private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
-        private Applicants applicant;
+        private User user;
+        private readonly IEmailService _emailService;
 
-        public AuthManager(UserManager<Applicants> userManager, IConfiguration configuration)
+        public AuthManager(UserManager<User> userManager, IConfiguration configuration, IEmailService emailService)
         {
             _userManager = userManager;
             _configuration = configuration;
+            _emailService = emailService;
         }
 
         public async Task<string> CreateToken()
@@ -41,6 +42,7 @@ namespace ResultCompiler.Core.Implementation
             var token = new JwtSecurityToken(
                 issuer: jwtSettings.GetSection("validIssuer").Value,
                 claims: claims,
+
                 expires: DateTime.Now.AddMinutes(15),//jwtSettings.GetSection("lifetime").Value,
                 signingCredentials: signingCredentials);
 
@@ -51,10 +53,10 @@ namespace ResultCompiler.Core.Implementation
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Name, applicant.UserName)
+                new Claim(ClaimTypes.Name, user.UserName)
             };
 
-            var roles = await _userManager.GetRolesAsync(applicant);
+            var roles = await _userManager.GetRolesAsync(user);
 
             foreach (var role in roles)
             {
@@ -73,11 +75,11 @@ namespace ResultCompiler.Core.Implementation
             return new SigningCredentials(secret, SecurityAlgorithms.HmacSha256);
         }
 
-        public async Task<bool> ValidateUser(LoginDto user)
+        public async Task<bool> ValidateUser(User user)
         {
-            applicant = await _userManager.FindByNameAsync(user.Email);
+            user = await _userManager.FindByNameAsync(user.Email);
 
-            return (applicant != null && await _userManager.CheckPasswordAsync(applicant, user.Password));
+            return (user != null && await _userManager.CheckPasswordAsync(user, user.Password));
         }
     }
 }

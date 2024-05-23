@@ -25,6 +25,11 @@ namespace GeneralWorkPermit.Models
         public string? OtherSpecialRequirements { get; set; }
         public bool SpeialRequirement { get; set; }
         public GasTestingRequireemnts? GasTesting { get; set; }
+        public bool GWTapprove { get; set; }
+        public string? GWPNumber { get; set; }
+        public Applicants Applicant { get; set; }
+        [ForeignKey(nameof(Applicant))]
+        public string ApplicantId { get; set; }
     }
 
     public class GasTestingRequireemnts

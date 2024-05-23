@@ -3,13 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ResultCompiler.Entity.DTOModels;
+using GeneralWorkPermit.Models;
 
-namespace ResultCompiler.Core.Services
+namespace GeneralWorkPermit.Services
 {
     public interface IAuthManager
     {
-        Task<bool> ValidateUser(LoginDto user);
+        Task<bool> ValidateUser(User user);
         Task<string> CreateToken();
     }
 }

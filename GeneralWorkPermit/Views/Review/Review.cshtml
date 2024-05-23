@@ -1,0 +1,154 @@
+﻿@model GeneralWorkPermit.ViewModels.ReviewVM
+
+@{
+    ViewData["Title"] = "review";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<h4>Register</h4>
+<hr />
+
+<div class="row">
+    <div class="col-4">
+        <form asp-controller="review" asp-action="review" class="needs-validation" novalidate>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="HazardousEnergy" class="control-label" ></label>
+                <input  asp-for="HazardousEnergy" class="form-check-input" type="checkbox" required />
+                <span asp-validation-for="HazardousEnergy" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ManagementOfChange" class="control-label"></label>
+                <input asp-for="ManagementOfChange" class="form-check-input" required />
+                <span asp-validation-for="ManagementOfChange" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ByPassed" class="control-label"></label>
+                <input asp-for="ByPassed" class="form-control" required />
+                <span asp-validation-for="ByPassed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ByPassedDescription" class="control-label"></label>
+                <input asp-for="ByPassedDescription" class="form-control" required />
+                <span asp-validation-for="ByPassedDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ByPassedTagNumber" class="control-label"></label>
+                <input asp-for="ByPassedTagNumber" class="form-control" required />
+                <span asp-validation-for="ByPassedTagNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ByPassReason" class="control-label"></label>
+                <input asp-for="ByPassReason" class="form-control" required />
+                <span asp-validation-for="ByPassReason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BackInService" class="control-label"></label>
+                <input asp-for="BackInService" class="form-control" required />
+                <span asp-validation-for="BackInService" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BackInServiceDescription" class="control-label"></label>
+                <input asp-for="BackInServiceDescription" class="form-control" required />
+                <span asp-validation-for="BackInServiceDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BackInServiceTagNumber" class="control-label"></label>
+                <input asp-for="BackInServiceTagNumber" class="form-control" required />
+                <span asp-validation-for="BackInServiceTagNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="BackInServiceReason" class="control-label"></label>
+                <input asp-for="BackInServiceReason" class="form-control" required />
+                <span asp-validation-for="BackInServiceReason" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ProvideAccess" class="control-label"></label>
+                <input asp-for="ProvideAccess" class="form-check-input" required />
+                <span asp-validation-for="ProvideAccess" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RestrictAccess" class="control-label"></label>
+                <input asp-for="RestrictAccess" class="form-check-input" required />
+                <span asp-validation-for="RestrictAccess" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CriticalLift" class="control-label"></label>
+                <input asp-for="CriticalLift" class="form-check-input" required />
+                <span asp-validation-for="CriticalLift" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="ByPassedDescription" class="control-label"></label>
+                <input asp-for="ByPassedDescription" class="form-check-input" required />
+                <span asp-validation-for="ByPassedDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="NightWork" class="control-label"></label>
+                <input asp-for="NightWork" class="form-check-input" required />
+                <span asp-validation-for="NightWork" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="JSAReviewed" class="control-label"></label>
+                <input asp-for="JSAReviewed" class="form-check-input" required />
+                <span asp-validation-for="JSAReviewed" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="OtherSpecialRequirements" class="control-label"></label>
+                <input asp-for="OtherSpecialRequirements" class="form-control" required />
+                <span asp-validation-for="OtherSpecialRequirements" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="SpeialRequirement" class="control-label"></label>
+                <input asp-for="SpeialRequirement" class="form-check-input" required />
+                <span asp-validation-for="SpeialRequirement" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="GWTapprove" class="control-label"></label>
+                <input asp-for="GWTapprove" class="form-check-input" required />
+                <span asp-validation-for="GWTapprove" class="text-danger"></span>
+            </div>
+
+
+            <h2>Gas Testing</h2>
+
+            <div class="form-group">
+                <label asp-for="Hours" class="control-label">Hours</label>
+                <input asp-for="Hours" class="form-control" required />
+                <span asp-validation-for="Hours" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Percent" class="control-label">Percent</label>
+                <input asp-for="Percent" class="form-control" required />
+                <span asp-validation-for="Percent" class="text-danger"></span>
+            </div>
+
+
+
+
+
+            <div class="form-group">
+                <input asp-route="" type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+
+<div>
+    <a asp-controller="Home" asp-action="Index">Back to Home</a>
+</div>
+
+
+
+
+
+
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}

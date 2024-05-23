@@ -1,6 +1,9 @@
-﻿namespace GeneralWorkPermit.DTO
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using GeneralWorkPermit.Models;
+
+namespace GeneralWorkPermit.ViewModels
 {
-    public class ReviewDto
+    public class ReviewVM
     {
         public bool HazardousEnergy { get; set; }
         public bool ManagementOfChange { get; set; }
@@ -19,5 +22,18 @@
         public bool JSAReviewed { get; set; }
         public string? OtherSpecialRequirements { get; set; }
         public bool SpeialRequirement { get; set; }
+        public bool GWTapprove { get; set; }
+        public string? GWPNumber { get; set; }
+        public string ApplicantEmail { get; set; }
+
+        public int Hours { get; set; }
+        public int Percent { get; set; }
+        public int OTwo { get; set; }
+        public string? H2S { get; set; }
+        public string? CoAndPpm { get; set; }
+        public string? others { get; set; }
+        public string? Instrument { get; set; }
+        public string? GasTesterName { get; set; }
+        public string? Signature { get; set; }
     }
 }

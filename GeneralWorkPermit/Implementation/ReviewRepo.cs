@@ -1,5 +1,5 @@
 ﻿using GeneralWorkPermit.Context;
-using GeneralWorkPermit.DTO;
+using GeneralWorkPermit.EmailService;
 using GeneralWorkPermit.Models;
 using GeneralWorkPermit.Services;
 using Microsoft.EntityFrameworkCore;
@@ -9,38 +9,45 @@ namespace GeneralWorkPermit.Implementation
     public class ReviewRepo : IReview
     {
         private readonly ApplicationContext _context;
-        public async Task<bool> AddInspection(ReviewDto rev, GasTestingRequireemnts gastest, string applicantId)
+        private readonly IEmailService _emailService;
+
+        public ReviewRepo(ApplicationContext context, IEmailService emailService)
+        {
+            _context = context;
+            _emailService = emailService;
+        }
+        public async Task<bool> AddInspection(Reviews rev, GasTestingRequireemnts gastest, string applicantId)
         {
             var applicant = await _context.applicant.FindAsync(applicantId);
             
             if (applicant == null) return false;
 
-            var review = new Reviews()
-            {
-                ReviewsId = applicantId,
-                GasTesting = gastest,
-                HazardousEnergy = rev.HazardousEnergy,
-                ManagementOfChange = rev.ManagementOfChange,
-                ByPassed = rev.ByPassed,
-                ByPassedTagNumber = rev.ByPassedTagNumber,
-                ByPassedDescription = rev.ByPassedDescription,
-                ByPassReason = rev.ByPassReason,
-                BackInService = rev.BackInService,
-                BackInServiceDescription = rev.BackInServiceDescription,
-                BackInServiceReason = rev.BackInServiceReason,
-                BackInServiceTagNumber = rev.BackInServiceTagNumber,
-                ProvideAccess = rev.ProvideAccess,
-                RestrictAccess = rev.RestrictAccess,
-                CriticalLift = rev.CriticalLift,
-                NightWork = rev.NightWork,
-                JSAReviewed = rev.JSAReviewed,
-                OtherSpecialRequirements = rev.OtherSpecialRequirements,
-                SpeialRequirement = rev.SpeialRequirement,
-                GWTapprove = false,
-                GWPNumber = string.Empty
-            };
+            //var review = new Reviews()
+            //{
+            //    ReviewsId = applicantId,
+            //    GasTesting = gastest,
+            //    HazardousEnergy = rev.HazardousEnergy,
+            //    ManagementOfChange = rev.ManagementOfChange,
+            //    ByPassed = rev.ByPassed,
+            //    ByPassedTagNumber = rev.ByPassedTagNumber,
+            //    ByPassedDescription = rev.ByPassedDescription,
+            //    ByPassReason = rev.ByPassReason,
+            //    BackInService = rev.BackInService,
+            //    BackInServiceDescription = rev.BackInServiceDescription,
+            //    BackInServiceReason = rev.BackInServiceReason,
+            //    BackInServiceTagNumber = rev.BackInServiceTagNumber,
+            //    ProvideAccess = rev.ProvideAccess,
+            //    RestrictAccess = rev.RestrictAccess,
+            //    CriticalLift = rev.CriticalLift,
+            //    NightWork = rev.NightWork,
+            //    JSAReviewed = rev.JSAReviewed,
+            //    OtherSpecialRequirements = rev.OtherSpecialRequirements,
+            //    SpeialRequirement = rev.SpeialRequirement,
+            //    GWTapprove = false,
+            //    GWPNumber = string.Empty
+            //};
 
-            await _context.reviews.AddAsync(review);
+            var entity = await _context.reviews.AddAsync(rev);
             return _context.SaveChanges() > 0;
         }
 
@@ -55,66 +62,67 @@ namespace GeneralWorkPermit.Implementation
             return await _context.SaveChangesAsync() > 0;
         }
 
-        public async Task<List<AdminApplicantDto>> GetAllApplicant()
+        public async Task<List<Applicants>> GetAllApplicant()
         {
-             return  _context.applicant.Select(x =>
-            new AdminApplicantDto()
-            {
-                Company = x.Company,
-                Duration = x.Duration,
-                Email = x.Email,
-                EndDate = x.EndDate,
-                Equipments = x.Equipments,
-                StartDate = x.StartDate,
-                Facility = x.Facility,
-                FirstName = x.FirstName,
-                LastName = x.LastName,
-                Location = x.Location,
-                Password = String.Empty,
-                UserId = x.Id,
-            }).ToList();
+            return _context.applicant.ToList();
         }
 
-        public async Task<List<AdminReviewDto>> GetAllReviews()
+        public async Task<List<Reviews>> GetAllReviews()
         {
-            var reviews = await _context.reviews.ToListAsync();
-            var reviewIds = reviews.Select(x => x.ReviewsId).ToList();
+            var reviews = await _context.Set<Reviews>().ToListAsync();
 
-            var gastestings = await _context.gastesting
-                .Where(g => reviewIds.Contains(g.ReviewId))
-                .ToListAsync();
+            //var gastestings = await _context.gastesting
+            //    .Where(g => reviews.Contains(g.ReviewId))
+            //    .ToListAsync();
 
 
-            return reviews.Select(x =>
-            new AdminReviewDto()
-            {
-                BackInService = x.BackInService,
-                BackInServiceReason = x.BackInServiceReason,
-                BackInServiceDescription = x.BackInServiceDescription,
-                BackInServiceTagNumber = x.BackInServiceTagNumber,
-                ByPassed = x.ByPassed,
-                ByPassedDescription = x.ByPassedDescription,
-                ByPassedTagNumber = x.ByPassedTagNumber,
-                ByPassReason = x.ByPassReason,
-                CriticalLift = x.CriticalLift,
-                HazardousEnergy = x.HazardousEnergy,
-                JSAReviewed = x.JSAReviewed,
-                ManagementOfChange = x.ManagementOfChange,
-                NightWork = x.NightWork,
-                OtherSpecialRequirements = x.OtherSpecialRequirements,
-                ProvideAccess = x.ProvideAccess,
-                SpeialRequirement = x.SpeialRequirement,
-                RestrictAccess = x.RestrictAccess,
-                ReviewsId = x.ReviewsId,
-                gastesting = gastestings.FirstOrDefault(g => g.ReviewId == x.ReviewsId)
-
-            }).ToList();
+            return reviews;
+            //new AdminReviewDto()
+            //{
+            //    BackInService = x.BackInService,
+            //    BackInServiceReason = x.BackInServiceReason,
+            //    BackInServiceDescription = x.BackInServiceDescription,
+            //    BackInServiceTagNumber = x.BackInServiceTagNumber,
+            //    ByPassed = x.ByPassed,
+            //    ByPassedDescription = x.ByPassedDescription,
+            //    ByPassedTagNumber = x.ByPassedTagNumber,
+            //    ByPassReason = x.ByPassReason,
+            //    CriticalLift = x.CriticalLift,
+            //    HazardousEnergy = x.HazardousEnergy,
+            //    JSAReviewed = x.JSAReviewed,
+            //    ManagementOfChange = x.ManagementOfChange,
+            //    NightWork = x.NightWork,
+            //    OtherSpecialRequirements = x.OtherSpecialRequirements,
+            //    ProvideAccess = x.ProvideAccess,
+            //    SpeialRequirement = x.SpeialRequirement,
+            //    RestrictAccess = x.RestrictAccess,
+            //    ReviewsId = x.ReviewsId,
+            //    gastesting = gastestings.FirstOrDefault(g => g.ReviewId == x.ReviewsId)
         }
 
-        private string GenerateGWPNumber()
+        public async Task SendPermitNumberMail( string applicantname, string email, string gwpnumber)
+        {
+            var mail = new EmailMessage
+            (
+                new List<string>() { email},
+                $"Hello {applicantname}, \n\nThis is to inform you that your application is successful and your PERMIT NUMBER IS {gwpnumber}",
+                "GwpNumber"
+            );
+
+           await _emailService.SendEmailAsync(mail);
+        }
+
+        public async Task<Applicants> GetApplicantByEmail(string email)
+        {
+            return await _context.applicant.Include(x => x.User).FirstOrDefaultAsync(x => x.User.Email == email); 
+        }
+
+        private static string GenerateGWPNumber()
         {
             return string.Join("", Guid.NewGuid().ToString("N").Where(x => char.IsDigit(x))).Substring(0, 10);
         }
+
+
 
     }
 }
